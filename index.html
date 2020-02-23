@@ -21,7 +21,39 @@
 
     <h2>Structure</h2>
 
-    <p>The API is designed around the REST ideology, providing simple and predictable URL's to access and modify objects.  Requests support <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html">standard HTTP methods</a> like GET, PUT, POST and DELETE and <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html">standard HTTP status</a> codes.  Response bodies are always UTF-8 encoded JSON(-LD)objects unless explicitly documented otherwise.</p>
+    <p>The API is designed around the REST ideology, providing simple and predictable URL's to access and modify objects.  Requests support <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html">standard HTTP methods</a> like GET, PUT, POST and DELETE and <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html">standard HTTP status</a> codes.  Response bodies are always UTF-8 encoded JSON(-LD) objects unless explicitly documented otherwise.</p>
+
+    <p>Whenever you think RESTful web service you should think HTTP because it has all the features that support you to build great web services. </p>
+
+    <ul>
+        <li>GET for retrieving</li>
+        <li>POST for creating</li>
+        <li>PUT for updating</li>
+        <li>DELETE for deleting</li>
+        <li>PATCH for partial updates</li>
+    </ul>
+
+    <p>Always use plurals when naming resources.  Suppose we have a service that hosts a users resource.  The following should be used to manage the resource.</p>
+
+    <ul>
+        <li>Create a user: POST /users</li>
+        <li>Delete a user: DELETE /users/1</li>
+        <li>Get all users: GET /users</li>
+        <li>Get one user: GET/users/1</li>
+    </ul>
+
+    <p>Response codes are very important to help clients handle exceptions properly.  Some of the most common are the following:</p>
+
+    <ul>
+        <li>200 - Success</li>
+        <li>302 - Temporarly moved (ex: new resource created)</li>
+        <li>304 - Not modified (ex: already cached)</li>
+        <li>400 - Bad request (ex: validation rule)</li>
+        <li>401 - Unauthorized (ex: when a user needs to sign in)</li>
+        <li>403 - Permission denied (ex: when a user tries to get a url they cant access)</li>
+        <li>404 - Page not found (ex: when a resource is not there)</li>
+        <li>500 - Server error (ex: generic exception)</li>
+    </ul>
 
     <h2>Documentation</h2>
 
@@ -167,6 +199,30 @@
         <li>Read requests are normally coarse-grained. Returning all information as required to render the page; it won’t hurt as much as two separate API calls in some cases.</li>
         <li>On the other hand, write requests must be fine-grained. Find out everyday operations clients needs, and provide a specific API for that use case.</li>
     </ul>
+
+    <h2>Testing Tools</h2>
+
+    <p>Functional testing of REST APIs entails sending HTTP requests and checking responses so that we can verify that APIs behave as we expect. REST uses HTTP for transport that specifies the request and response formats of API. TCP/IP, in turn, takes the HTTP messages and decides how to transport them over the wire.</p>
+
+    <h3>cURL</h3>
+
+    <p>cURL is a popular command line tool that usese its own HTTP stack and is available on all platforms.</p>
+
+    <h3>Postman</h3>
+
+    <p>Postman is a REST client that allows us to test REST API's.  It allows us to create http request and generate the equivalent cURL commands we can use.  It creates multiple environments for Dev, Test, Pre-Prod as each environment has different configurations.</p>
+
+    <h3>Burp</h3>
+
+    <p>Burp is a HTTP debugger that let us see the web traffic that goes between the client and the API. It runs as a proxy between the client and the server. This allows us to intercept the request and the reponse and modify them to create scenarios that are otherwise difficult to test without changing the client. It is a suite of tools that is mainly used for security testing but it can be very useful for API testing as well. Set up your postman to send request to Burp proxy and configure Burp to intercept client request and server response. Intercept request and response as shown below.</p>
+
+    <h3>Wireshark</h3>
+
+    <p>Verification of some features of API, e.g., encryption, compression, etc., will require us to look a level deeper to see what is being sent and received on the network. Wireshark is a tool that monitors network interface and keeps a copy of all TCP packets that pass through it. Traffic is split by layers — HTTP, TCP, IP, etc. It also helps us to troubleshoot issues that require us to go deeper, e.g., TLS handshake.</p>
+
+    <h3>JMeter</h3>
+
+    <p>JMeter is a load testing tool which can help test the amount of load that can be placed on your API and make sure that quotas, limits and DoS attacks will not affect your other cutomers.</p>
 
     <h2>More...</h2>
 
