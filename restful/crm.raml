@@ -1,0 +1,133 @@
+#%RAML 1.0
+---
+
+schemas:
+  person: |
+    {
+      title: "Person Schema",
+      type: "object",
+      properties: {
+        firstName: {
+          type: "string"
+        },
+        lastName: {
+          type: "string"
+        },
+        email: {
+          type: "string"
+        }
+      }
+      required: ["firstName", "lastName"]
+    }
+
+/organizations:
+  description: Organizations are business in the system
+  get:
+    description: Get a list of all organizations
+    queryParameters:
+      orgName:
+        description: "The name of an organization to search (it is case insensitive and doesn't need to match the whole title)"
+        required: true
+        minLength: 3
+        type: string
+        example: "Bank of "
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "organizations": [
+                  {
+                    "orgNumber": "550e8400-e29b-41d4-a716-446655440000",
+                    "orgName": "Bank of Montreal"
+                  },
+                  {
+                    "orgNumber": "550e8400-e29b-41d4-a716-446655440111",
+                    "orgName": "Bank of Canada"
+                  }
+                ]
+              }
+  /{orgNumber}:
+    description: Organization
+    get:
+      description: Get the given organization
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "orgNumber": "550e8400-e29b-41d4-a716-446655440000",
+                  "orgName": "Get Lucky",
+                  "admin": {
+                    "contactNumber": "110e8300-e32b-41d4-a716-664400445500"
+                    "contactName": "Scott"
+                  },
+                  "location": {
+                    "locationNumber": "183100e3-0e2b-4404-a716-66104d440550",
+                    "locationName": "Head Office"
+                  }
+                }
+        404:
+          body:
+            application/json:
+              example: |
+                {"message": "Organization not found"}
+  post:
+/contacts:
+  description: People in the system
+  get:
+    description: Get a list of all contacts
+    queryParameters:
+      sort?:
+        type: string[]
+        description: "The sort order in the format of 'property[-asc|desc],property[-asc|desc]'."
+        example: ?sort=contactName-asc
+      contactName:
+        description: "The name of the contact to search (it is case insensitive and doesn't need to match the whole title)"
+        required: true
+        minLength: 3
+        type: string
+        example: "Scott"
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "contact": [
+                  {
+                    "id": "550e8400-e29b-41d4-a716-446655440000",
+                    "name": "Scott Smith"
+                  },
+                  {
+                    "id": "550e8400-e29b-41d4-a716-446655440111",
+                    "name": "Scott Jones"
+                  },
+                  {
+                    "id": "550e8400-e29b-41d4-a716-446655440222",
+                    "name": "Murry Scott"
+                  }
+                ]
+              }
+  /{contactId}:
+    description: Contact
+    get:
+      description: Get the contact with `contactId = {contactId}`
+      responses:
+        200:
+          body:
+            application/json:
+              type: person
+              example: |
+                {
+                  "id": "550e8400-e29b-41d4-a716-446655440000",
+                  "name": "Scott Smith",
+                  "email": "scott@org.com"
+                }
+        404:
+          body:
+            application/json:
+              example: |
+                {"message": "Contact not found"}
