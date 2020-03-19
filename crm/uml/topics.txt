@@ -1,0 +1,64 @@
+@startuml
+
+package "common" {
+    class PersonName {
+        Salutation salutation
+        String firstName
+        String middleName
+        String lastName
+    }
+
+    class MailingAddress {
+        String street
+        String city
+        String province
+        Country country
+        String postalCode
+    }
+
+    class Telephone {
+        Integer number
+        Integer extension
+    }
+}
+
+package "crm" {
+    class Organization {
+        Identifier organizationId << readonly >>
+        Status status << readonly >>
+        String displayName
+        Location mainLocation
+    }
+
+    class Location {
+        Identifier locationId << readonly >>
+        Identifier organizationId << readonly >>
+        Status status << readonly >>
+        String locationReference << readonly >>
+        String displayName
+        MailingAddress address
+    }
+
+    class Person {
+        Identifer personId << readonly >>
+        Identifer organizationId << readonly >>
+        Status status << readonly >>
+        String displayName
+        PersonName name
+        Location address
+        String email
+        String jobTitle
+        Language languageCode
+        Telephone homePhone
+        Telephone faxNumber
+    }
+
+    class User {
+        String username << readonly >>
+        Person person << readonly >>
+        List<Role> roles
+    }
+
+}
+
+@enduml

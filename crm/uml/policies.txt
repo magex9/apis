@@ -1,0 +1,31 @@
+@startuml
+
+package "policies" {
+
+    interface OrganizationPolocies {
+        boolean canCreateOrganization(Principal user, Identifier organizationId)
+        boolean canViewOrganization(Principal user, Identifier organizationId)
+        boolean canUpdateOrganization(Principal user, Identifier organizationId)
+        boolean canDisableOrganization(Principal user, Identifier organizationId)
+
+        boolean canCreateLocation(Principal user, Identifier locationId)
+        boolean canViewLocation(Principal user, Identifier locationId)
+        boolean canUpdateLocation(Principal user, Identifier locationId)
+        boolean canDisableLocation(Principal user, Identifier locationId)
+
+        boolean canCreatePerson(Principal user, Identifier personId)
+        boolean canViewPerson(Principal user, Identifier personId)
+        boolean canUpdatePerson(Principal user, Identifier personId)
+        boolean canDisablePerson(Principal user, Identifier personId)
+
+        boolean canUpdateUserRole(Principal user, String username)
+
+        List<Message> validate(Organization organization)
+        List<Message> validate(Location organization)
+        List<Message> validate(Person organization)
+        List<Message> validate(List<Role> roles)
+    }
+
+}
+
+@enduml

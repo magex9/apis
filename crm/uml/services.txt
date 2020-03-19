@@ -1,0 +1,31 @@
+@startuml
+
+package "services" {
+
+    interface Organizations {
+        Organization createOrganization(String organizationName)
+        Organization enableOrganization(Identifier organizationId)
+        Organization disableOrganization(Identifier organizationId)
+        Organization updateOrganizationName(Identifier organizationId, String name)
+        Organization updateMainLocation(Identifier organizationId, Location location)
+
+        Location createLocation(Identifier organizationId, String locationName, String locationReference, MailingAddress address)
+        Location updateLocationName(Identifier locationId, String locationName)
+        Location updateLocationAddress(Identifier locationId, MailingAddress address)
+        Location enableLocation(Identifier locationId)
+        Location disableLocation(Identifier locationId)
+
+        Person createPerson(PersonName name, MailingAddress address, String email, String jobTitle, Language language, Telephone homePhone, Telephone faxNumber)
+        Person updatePersonName(Identifier personId, PersonName name)
+        Person updatePersonAddress(Identifier personId, MailingAddress address)
+        Person updatePersonCommunication(Identifier personId, String email, String jobTitle, Language language, Telephone homePhone, Telephone faxNumber)
+        Person enablePerson(Identifier personId)
+        Person disablePerson(Identifier personId)
+
+        User addUserRole(Identifier personId, Role role)
+        User removeUserRole(Identifier personId, Role role)
+    }
+
+}
+
+@enduml

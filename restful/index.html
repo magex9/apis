@@ -16,8 +16,7 @@
       <a href="../restful/index.html" class="btn">RESTful</a>
       <a href="../graphql/index.html" class="btn">GraphQL</a>
       <a href="../purejson/index.html" class="btn">JSON Pure</a>
-      <a href="http://json-schema.org/" class="btn">JSON Schema</a>
-      <a href="https://json-ld.org/" class="btn">JSON Linked Data</a>
+      <a href="../crm/index.html" class="btn">Example</a>
     </section>
 
     <section class="main-content">
@@ -34,7 +33,7 @@
             <li>Use standard header parameters (application/json)</li>
             <li>Use standard restful application markup language (RAML)</li>
             <li>Interlink as many of the resources as you can.</li>
-            <li>Use HATEAOS to avoid clients having to know how to parse URI patterns.</li>
+            <li>Use <a href="https://restfulapi.net/hateoas/">HATEAOS</a> to avoid clients having to know how to parse URI patterns.</li>
         </ul>
 
         <p>Whenever you think RESTful web service you should think HTTP because it has all the features that support you to build great web services. </p>
@@ -72,9 +71,9 @@
         <h2>Implementations</h2>
 
         <ul>
+            <li><a href="https://raml.org/">RAML (RESTful Application Markup Language)</a></li>
             <li><a href="https://docs.nylas.com/reference#introduction">Nylas</a></li>
             <li><a href="https://swagger.developerhub.io/swagger-petstore/ref">Swagger</a></li>
-            <li><a href="https://raml.org/">RAML</a></li>
             <li><a href="https://cxf.apache.org">Apache CXF</a></li>
             <li><a href="https://www.mulesoft.com/platform/enterprise-integration">MuleSoft</a></li>
         </ul>
@@ -100,7 +99,7 @@
 
         <h2>Use REST and HATEAOS</h2>
 
-        <p>REST is a proven and battle-tested architectural approach to providing API's, however its good to provide context around the set of resources without having prior knowledge of the internal URI scheme with th ehelp of HATEOAS.  It enhances the response model of each resource by providing a set of relevant links so that it is easier to interact with the API.  Without looking up a specification or other metadata service.  One good format of HATEAOS is the <a href="https://en.wikipedia.org/wiki/Hypertext_Application_Language">HAL</a> specification.</p>
+        <p>REST is a proven and battle-tested architectural approach to providing API's, however its good to provide context around the set of resources without having prior knowledge of the internal URI scheme with the help of HATEOAS.  It enhances the response model of each resource by providing a set of relevant links so that it is easier to interact with the API.  Without looking up a specification or other metadata service.  One good format of HATEAOS is the <a href="https://en.wikipedia.org/wiki/Hypertext_Application_Language">HAL</a> specification.</p>
 
         <pre class="code">
     {
@@ -130,7 +129,7 @@
             <li>The server prepares the response, but in order to help the brower with caching, it includes the header "ETag" with the value of the response: "ETag: 'Version1'".</li>
             <li>The server sends the response with the above header, the content of the project 123 in the boy with the status code of 200.  The browser renders the resource and at the same time caches the resource copy along with the header information.</li>
             <li>Later the same browser makes another request for the same resource project 123 but with following conditional request headre "If-None-Match: 'Version1'".</li>
-            <li>On receiving the request for project 123 along with "If-None-Match" header, the server logic checks if project 123 needs a new copy by comparing the current ETag identifier generated on the content of project 123 and the one that is recived in the request header.</li>
+            <li>On receiving the request for project 123 along with "If-None-Match" header, the server logic checks if project 123 needs a new copy by comparing the current ETag identifier generated on the content of project 123 and the one that is received in the request header.</li>
             <li>If the request's If-None-Match is the same as the currently generated/assigned value of ETag on the server, then status code 304 (Not Modified) with the empty body is sent back and the browser that uses a cached copy of project 123.</li>
             <li>If the requests If-None-Match value doesnt match the currently generated/ assigned value of ETag (ex: version2) for project 123, then the server sends back the new content in the body along with the status code 200.  The ETag header with the new value is also included in the response.  The browser uses the new project 123 an dupdates its cache with th enew data.</li>
         </ol>
@@ -141,7 +140,7 @@
 
         <p>In some cases, calls across the network may be expensive, so to minimize them, coarse-grained APIs may be the best fit, as each request from the client forces lot of work at the server side, and in fine-grained, many calls are required to do the same amount of work at the client side. </p>
 
-        <p>Example: Consider a service returns customer orders in a single call. In case of fine-grained, it returns only the customer IDs, and for each customer id, the client needs to make an additional request to get details, so n+1 calls need to be made by the clients. It may be expensive round trips regarding its performance and response times over the network.</p>
+        <p>Example: Consider a service returns customer orders in a single call. In case of fine-grained, it returns only the customer IDs, and for each customer id, the client needs to make an additional request to get details, so n+1 calls need to be made by the clients. It makes expensive round trips regarding its performance and response times over the network.</p>
 
         <p>In a few other cases, APIs should be designed at the lowest practical level of granularity, because combining them is possible and allowed in ways that they suit the customer needs.</p>
 
@@ -154,6 +153,16 @@
             <li>On the other hand, write requests must be fine-grained. Find out everyday operations clients needs, and provide a specific API for that use case.</li>
         </ul>
 
+        <h2>Transactional</h2>
+
+        <p>In many cases, the experience API will be calling many service API's and if one of them should fail the whole rest call should fail and rollback, not just the single API.</p>
+
+        <p>For example, lets say we have a travel booking API which calls multiple other API's.  The customer choose a flight, rental car and hotel with valid information and the system will send them an email after.  What happens if the calls are not transactional and the flight, rental car and email were successful, but the hotel failed and never book.  The user would receive an email expecting their vacation to be ready, and they will be frusterated when they finally get to their hotel.  This full transaction needs to be either all commit succesfully or rollback.</p>
+
+        <p>The same could happen when registering a new orgainzation if the orgainzation succeded and sent and email to the user but their user object failed to save to the database for some reason.</p>
+
+        <p>These transaction cases are not easy to solve and really depend on the the context of the problem and if its required.  Information about <a href="https://www.baeldung.com/transactions-across-microservices">transactions across microservices</a> and <a href="https://medium.com/swlh/handling-transactions-in-the-microservice-world-c77b275813e0">multiple architectures</a> can help on a case by case basis. Two Phse Commits and Eventual Consistency are the two many ways to solve these issues.</p>
+
         <h2>MuleSoft</h2>
 
         <p>MuleSoft provides a front end for RESTful API's called Anypoint that helps get new innovations to production faster by providing a COTS software that can help visualize API end points and a drag and drop interface for creating them.</p>
@@ -163,7 +172,7 @@
         <h2>Other useful links to gather information from</h2>
       
         <ul>
-            <li><a href="https://www.howtographql.com/basics/0-introduction/">GraphQL Basics</a></li>
+            <li><a href="https://cloud.google.com/files/apigee/apigee-web-api-design-the-missing-link-ebook.pdf">Apigee - The Missing Link eBook</a></li>
             <li><a href="https://graphql-java.readthedocs.io/en/latest/">GraphQL Java</a></li>
         </ul>
         

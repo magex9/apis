@@ -1,0 +1,46 @@
+@startuml
+
+package "system" {
+    enum Status {
+        ACTIVE,
+        INACTIVE,
+        PENDING
+    }
+
+    class Enabled {
+        Identifer Identifier
+        DateTime enabled
+        DateTime disabled
+    }
+
+    class Role {
+        Integer code
+        String name
+    }
+
+    class Message {
+        Object base
+        String type
+        String path
+        String message
+    }
+}
+
+package "lookup" {
+    class Salutation {
+        Integer code
+        String name
+    }
+
+    class Country {
+        String code
+        String name
+    }
+
+    class Language {
+        String code
+        String name
+    }
+}
+
+@enduml

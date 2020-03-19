@@ -15,6 +15,14 @@ a {
   a:hover {
     text-decoration: underline; }
 
+p a {
+  text-decoration: underline;
+}
+
+li a {
+  text-decoration: underline;
+}
+
 .btn {
   display: inline-block;
   margin-bottom: 1rem;

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Customer Relationship Management</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../stylesheets/normalize.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="../stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="../stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Customer Relationship Management</h1>
+      <h2 class="project-tagline">Requirements for managing organizations and their users</h2>
+      <a href="../index.html" class="btn">Home</a>
+      <a href="../restful/index.html" class="btn">RESTful</a>
+      <a href="../graphql/index.html" class="btn">GraphQL</a>
+      <a href="../purejson/index.html" class="btn">JSON Pure</a>
+      <a href="../crm/index.html" class="btn">Example</a>
+    </section>
+
+    <section class="main-content">
+
+        <h2>Customer Relationship Management</h2>
+
+        <p>CRM technologies are used for managing all of our core organization's relationships and interactions.  It allows organizations to maintain and keep information about their users and locations up to date and correct in our systems.  We currently have multiple applications performing user management which makes it difficult to keep the information up to date and relable.</p>
+
+        <p>This can give us a clear overview of all our users and organization in one place - a simple, up to date dashboard that can show an organizations history, and the status of their information.</p>
+
+        <h2>Models</h2>
+
+        <p>The CRM system has a few core models that are used internally to help applications run. These do not need to be maintained by the users of the system but are avaliable through the API.  There are also some business domain models which are entities that the users can create, update and maintain themsevles.  These domain models are modified through the orgainzation service.</p>
+
+        <a href="uml/base.txt"><img src="uml/images/base.png" /></a>
+
+        <a href="uml/topics.txt"><img src="uml/images/topics.png" /></a>
+
+        <a href="uml/services.txt"><img src="uml/images/services.png" /></a>
+
+        <a href="uml/policies.txt"><img src="uml/images/policies.png" /></a>
+
+        <h2>Implementations</h2>
+
+        <p>I would like to take these simple object models and try various implementations of endpoints to be able to compare each proof of concept.  The information in each of these services will be similar through each of our applications.  </p>
+
+        <a href="architecture.png"><img src="architecture.png" /></a>
+
+        <p>I think we all have sufficient knowledge of how to implement the service implementation, the design is the core interfaces that will be implemented, I will attempt to build a simple <a href="crm-mem.jar">in memory java archive</a> that the endpoint examples could use.</p>
+
+    </section>
+
+</body>
+</html>
