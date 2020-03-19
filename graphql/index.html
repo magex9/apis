@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Application Programming Interfaces</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../stylesheets/normalize.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="../stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="../stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">GraphQL API's</h1>
+      <h2 class="project-tagline">Documentation and references for GraphQL API's</h2>
+      <a href="../index.html" class="btn">Home</a>
+      <a href="../restful/index.html" class="btn">RESTful</a>
+      <a href="../graphql/index.html" class="btn">GraphQL</a>
+      <a href="../purejson/index.html" class="btn">JSON Pure</a>
+      <a href="http://json-schema.org/" class="btn">JSON Schema</a>
+      <a href="https://json-ld.org/" class="btn">JSON Linked Data</a>
+    </section>
+
+    <section class="main-content">
+
+        <h2>Introduction</h2>
+
+        <p>GraphQL was <a href="https://reactjs.org/blog/2015/05/01/graphql-introduction.html">implemented by facebook</a> in 2015 and has gained traction as the next step in API's to allow clients to get only the data they need.</p>
+
+        <h2>Tools</h2>
+
+        <p>Pluralsight gives a good course on <a href="https://app.pluralsight.com/guides/building-a-graphql-server-with-spring-boot"> building a GraphQL server with Spring Boot</a>.</p>
+
+        <p><a href="https://www.electronjs.org/apps/graphiql">GraphiQL is a great GUI built for editing and testing GraphQL queries and mutations.</a></p>
+
+        <h2>Queries</h2>
+
+        <p>An example of getting a user through curl/browser/ajax: </p>
+
+        <pre class="code">curl http://localhost:8080/graphql?query={user(contactId: 393839) {username}}</pre>
+
+        <p>Multiline easier to read queries can be done better through a GUI tool like GraphiQL: </p>
+
+        <pre class="code">
+{
+  user(contactId: 390239) {
+    username
+    person {
+      displayName
+      email
+      address {
+        country
+      }
+    }
+  }
+}</pre>
+
+        <p>And here is the response to that query: </p>
+
+        <pre class="code">
+{
+  "user": {
+    "jonny",
+    "person": {
+      "displayName": "Jonn-E",
+      "email": "jonn.e@coyote.ca",
+      "address": {
+        "country": "Canada"
+      }
+    }
+  }
+}</pre>
+
+        <h2>Mutations</h2>
+
+        <p>Mutations change the information stored in API and here is an example for updating some user information.</p>
+
+        <pre class="code">
+mutation {
+  updateContactName(
+    contactId: 390239,
+    name: {
+      firstName: "Jon"
+      middleName: "E"
+      lastName: "Coyote"
+    }
+  ) {
+    displayName
+  }
+}</pre>
+
+  <h2>Other useful links to gather information from</h2>
+
+  <ul>
+      <li><a href="https://reactjs.org/tutorial/tutorial.html">GraphQL Tutorial</a></li>
+      <li><a href="https://www.howtographql.com/basics/0-introduction/">GraphQL Basics</a></li>
+      <li><a href="https://graphql-java.readthedocs.io/en/latest/">GraphQL Java</a></li>
+  </ul>
+
+</body>
+</html>

@@ -32,36 +32,40 @@
             <li>The API should always be on (99.9% uptime or higher)</li>
             <li>The API should be lightning fast (keep response times low)</li>
             <li>The API should seamlessly update (no breaking changes)</li>
-            <li>The API should expsoe building blocks, not static solutions</li>
+            <li>The API should expose building blocks, not static solutions</li>
         </ul>
 
         <p>This document is a group of concepts ive found while doing research on API's and are the key concepts most important to me.</p>
 
         <h2>API Levels</h2>
 
-        <p>Most API's can be broken down into multiple teirs of reusability.  The interface (experience apis) is used to provide your customers with a developer friendly set of end points, The logic (process apis) layer is used to implement the business logic and the connector (system apis) are used to integrate with databases, cloud services, queues, etc).  This seperation helps break down the user stories that give a good user experience, into simplier system integration points.</p>
+        <p>Most API's can be broken down into multiple teirs of reusability.  The interface (experience api's) is used to provide customers with a developer friendly set of end points, the logic (process api's) layer is used to implement the business logic and the connector (system api's) layer is used to integrate with databases, cloud services, queues, etc).  This seperation helps break down the user stories that give a good user experience, into simplier system integration points.</p>
 
         <img src="api-levels.png" />
 
-        <p>System APIs provide a means for insulating the data consumers from the complexity or changes to the underlying systems. Once built, many consumers can access data without any need to know the details of the underlying systems. System APIs are typically fine-grained, business process-independent, and highly reusable.</p>
+        <p>System API's provide a means for insulating the data consumers from the complexity or any changes to the underlying systems. Once built, many consumers can access data without any need to know the details of the underlying systems. System API's are typically fine-grained, business process-independent, and highly reusable.</p>
 
-        <p>Process APIs provide a means of combining data and orchestrating multiple System APIs for a specific business purpose. They are often used to construct a business entity which attributes are managed in multiple systems of records by different business functions (CRM, Emailing, Document Management Stores, etc.).</p>
+        <p>Process API's provide a means of combining data and orchestrating multiple System API's for a specific business purpose. They are often used to construct a business entity which attributes are managed in multiple systems of records by different business functions (CRM, Emailing, Document Management Stores, etc.).</p>
 
-        <p>Experience APIs are similar to Process APIs in that they composite the content, features, and functionality of several other APIs. However, unlike Process APIs, Experience APIs are more specifically tied to a unique business context, and they project data formats, interaction timings, or protocols (rather than process or create them) into a specific channel and context.</p>
+        <p>Experience API's are similar to Process API's in that they composite the content, features, and functionality of several other API's. However, unlike Process API's, Experience API's are more specifically tied to a unique business context, and they project data formats, interaction timings, or protocols (rather than process or create them) into a specific channel and context.</p>
+
+        <p>An analogy of this would be a person going to the store to buy bread (experience).  That user requires multiple steps for payment and following a recipe to bake it (process).  That recipe is using multiple natural resources produced by farmers (system).</p>
 
         <h2>Documentation</h2>
 
-        <p>You can prove your API's worth in the docs themselves by allowing users to test a cURL response in the docs using the <a href="https://github.com/raml-org/raml-spec/blob/master/versions/raml-10/raml-10.md/#defining-examples-in-raml">examples from a RAML file</a>.</p>
+        <p>You can prove your API's worth in the docs themselves by allowing users to <a href="https://github.com/raml-org/raml-mock-service">test a cURL response</a> in the docs using the <a href="https://github.com/raml-org/raml-spec/blob/master/versions/raml-10/raml-10.md/#defining-examples-in-raml">examples from a RAML file</a>.</p>
 
-        <p>Make sure developers can figure out the parameters of the API's SDK integration as quick as possible.  This is meant to save coding time and elimate any mental roadblocks while learning how your API functions within their framework fo choice.  With a simple NodeJS, Python or Java SDK, developers should be able to build a full-featured integration in a fraction of the time.</p>
+        <p>Make sure developers can figure out the parameters of the API's SDK integration as quick as possible.  This is meant to save coding time and elimate any mental roadblocks while learning how your API functions within their framework of choice.  With a simple NodeJS, Python or Java SDK, developers should be able to build a full-featured integration in a fraction of the time.</p>
 
-        <h3>Treat your docs like the homepage of your website</h3>
+        <p>Having multiple ways to access information in an API will benefit users as well as a RESTful URL could be used to download a PDF or viewable item, GraphQL could be used to integrate tombstone information about customers and their reports and Pure JSON could be used to send large BLOBs of data to us for processing.  Having more then one method is helpful to the client, but also more for us to support.</p>
 
-        <p>Think of your API docs as the front page of your website. It's the central place users will bookmark and start using; it should be user-friendly, intuitive, and follow a logical flow.</p>
+        <h3>Treat our API docs like the homepage of a website</h3>
+
+        <p>Think of our API docs as the front page of our website. It's the central place users will bookmark and start using; it should be user-friendly, intuitive, and follow a logical flow.</p>
 
         <p>The API docs need to be inherently discoverable and easy to use, just like the API itself.  The docs must be easy to navigate with a clear table of contents and the main uses cases with examples right at the start.</p>
 
-        <img src="homepage.png" />
+        <a href="https://stripe.com/docs"><img src="homepage.png" /></a>
 
         <p>Its important to ensure the API is usable, your interface is only as usable as your documentation, and your documentation is only helpful when its easily discoverable.  The documentation should be organized in a consistent way that is searchable and provide contextual coverage across the entire API integration process.</p>
 
@@ -116,27 +120,31 @@
 
         <h2>Testing Tools</h2>
 
-        <p>Functional testing of REST APIs entails sending HTTP requests and checking responses so that we can verify that APIs behave as we expect. REST uses HTTP for transport that specifies the request and response formats of API. TCP/IP, in turn, takes the HTTP messages and decides how to transport them over the wire.</p>
+        <p>Functional testing of REST API's entails sending HTTP requests and checking responses so that we can verify that API's behave as we expect. REST uses HTTP for transport that specifies the request and response formats of API. TCP/IP, in turn, takes the HTTP messages and decides how to transport them over the wire.</p>
 
         <h3>cURL</h3>
 
-        <p>cURL is a popular command line tool that usese its own HTTP stack and is available on all platforms.</p>
+        <p><a href="https://curl.haxx.se/">cURL</a> is a popular command line tool that usese its own HTTP stack and is available on all platforms.</p>
 
         <h3>Postman</h3>
 
-        <p>Postman is a REST client that allows us to test REST API's.  It allows us to create http request and generate the equivalent cURL commands we can use.  It creates multiple environments for Dev, Test, Pre-Prod as each environment has different configurations.</p>
+        <p><a href="https://www.postman.com/">Postman</a> is a REST client that allows us to test REST API's.  It allows us to create http request and generate the equivalent cURL commands we can use.  It creates multiple environments for Dev, Test, Pre-Prod as each environment has different configurations.</p>
+
+        <h3>GraphiQL</h3>
+
+        <p><a href="https://www.electronjs.org/apps/graphiql">GraphiQL</a> is a light weight electron based application for writing GraphQL queries and mutations.</p>
 
         <h3>Burp</h3>
 
-        <p>Burp is a HTTP debugger that let us see the web traffic that goes between the client and the API. It runs as a proxy between the client and the server. This allows us to intercept the request and the reponse and modify them to create scenarios that are otherwise difficult to test without changing the client. It is a suite of tools that is mainly used for security testing but it can be very useful for API testing as well. Set up your postman to send request to Burp proxy and configure Burp to intercept client request and server response. Intercept request and response as shown below.</p>
+        <p><a href="https://portswigger.net/burp">Burp</a> is a HTTP debugger that let us see the web traffic that goes between the client and the API. It runs as a proxy between the client and the server. This allows us to intercept the request and the reponse and modify them to create scenarios that are otherwise difficult to test without changing the client. It is a suite of tools that is mainly used for security testing but it can be very useful for API testing as well. Set up your postman to send request to Burp proxy and configure Burp to intercept client request and server response. Intercept request and response as shown below.</p>
 
         <h3>Wireshark</h3>
 
-        <p>Verification of some features of API, e.g., encryption, compression, etc., will require us to look a level deeper to see what is being sent and received on the network. Wireshark is a tool that monitors network interface and keeps a copy of all TCP packets that pass through it. Traffic is split by layers — HTTP, TCP, IP, etc. It also helps us to troubleshoot issues that require us to go deeper, e.g., TLS handshake.</p>
+        <p><a href="https://www.wireshark.org/">Wireshark</a> allows for verification of some features of API, e.g., encryption, compression, etc., will require us to look a level deeper to see what is being sent and received on the network. Wireshark is a tool that monitors network interface and keeps a copy of all TCP packets that pass through it. Traffic is split by layers — HTTP, TCP, IP, etc. It also helps us to troubleshoot issues that require us to go deeper, e.g., TLS handshake.</p>
 
         <h3>JMeter</h3>
 
-        <p>JMeter is a load testing tool which can help test the amount of load that can be placed on your API and make sure that quotas, limits and DoS attacks will not affect your other cutomers.</p>
+        <p><a href="https://jmeter.apache.org/">JMeter</a> is a load testing tool which can help test the amount of load that can be placed on your API and make sure that quotas, limits and DoS attacks will not affect your other cutomers.</p>
 
         <h2>Useful Links</h2>
 
@@ -148,6 +156,7 @@
             <li><a href="https://www.gov.uk/guidance/gds-api-technical-and-data-standards#when-to-authenticate-your-api">https://www.gov.uk/guidance/gds-api-technical-and-data-standards#when-to-authenticate-your-api</a></li>
             <li><a href="https://backendless.com/docs/images/shared/backendless-architecture.png">https://backendless.com/docs/images/shared/backendless-architecture.png</a></li>
             <li><a href="https://www.getpostman.com/">https://www.getpostman.com/</a></li>
+            <li><a href="https://www.canada.ca/en/government/system/digital-government/modern-emerging-technologies/government-canada-standards-apis.html">Government of Canada API Standards</a></li>
             <li><a href="https://www.yworks.com/products/yed">https://www.yworks.com/products/yed</a></li>
         </ul>
         
