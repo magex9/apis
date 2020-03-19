@@ -1,0 +1,111 @@
+#%RAML 1.0
+---
+
+/organizations:
+  description: Complete collection of organizations
+  get:
+    description: Get a list of organizations
+    body:
+      application/x-www-form-urlencoded:
+        properties:
+          status:
+            description: "The organizations status"
+            required: false
+            type: string
+            example: active
+          displayName:
+            description: "The preferred display name of the organization"
+            required: false
+            type: string
+            example: "Bank"
+          country:
+            description: "The country of the main location of the organization"
+            required: false
+            type: string
+            example: "CA"
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "organizations": [
+                  {
+                    "@id": "http://example.com/organization/100000",
+                    "status": {
+                      "@context": "http://example.com/status",
+                      "@value": "active"
+                    }
+                    "name": "Bank of Scott",
+                    "country": {
+                      "@context": "http://example.com/status",
+                      "@value": "canada"
+                    }
+                    "modified": "2020-02-11T12:34:56Z"
+                  },{
+                    "organizationId": "100042",
+                    "status": "active",
+                    "name": "Jonn-E Mon-E Mart",
+                    "country": "CA",
+                    "modified": "2019-11-13T14:50:34Z"
+                  }
+                ]
+              }
+  put:
+    description: Create a new organization
+    body:
+      application/x-www-form-urlencoded:
+        properties:
+          status:
+            description: "The organizations status"
+            required: false
+            type: string
+            example: active
+          displayName:
+            description: "The preferred display name of the organization"
+            required: false
+            type: string
+            example: "Bank"
+          country:
+            description: "The country of the main location of the organization"
+            required: false
+            type: string
+            example: "CA"
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "organizationId": "100200",
+                "status": "active",
+                "name": "My Organization",
+                "modified": "2020-04-01T15:43:17Z"
+              }
+/organizations/{organizationId}:
+  description: Details about an organization
+  get:
+    description: Get all the details for an organization
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "organizationId": "100042",
+                "status": "active",
+                "name": "Jonn-E Mon-E Mart",
+                "country": "CA",
+                "modified": "2019-11-13T14:50:34Z"
+              }
+      403:
+        body:
+          application/json:
+            example: |
+              {"message": "Permission Denied"}
+      404:
+        body:
+          application/json:
+            example: |
+              {"message": "Organization not found"}
+              
