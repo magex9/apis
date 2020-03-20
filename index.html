@@ -16,6 +16,7 @@
       <a href="restful/index.html" class="btn">RESTful</a>
       <a href="graphql/index.html" class="btn">GraphQL</a>
       <a href="purejson/index.html" class="btn">JSON Pure</a>
+      <a href="tools/index.html" class="btn">Tools</a>
       <a href="crm/index.html" class="btn">Example</a>
     </section>
 
@@ -117,49 +118,6 @@
 
         <p><a href="https://dzone.com/articles/implementing-ddos-with-mulesoft-demonstration-with">Implementing a DoS attack with JMeter and Mulesoft.</a></p>
 
-        <h2>Testing Tools</h2>
-
-        <p>Functional testing of REST API's entails sending HTTP requests and checking responses so that we can verify that API's behave as we expect. REST uses HTTP for transport that specifies the request and response formats of API. TCP/IP, in turn, takes the HTTP messages and decides how to transport them over the wire.</p>
-
-        <h3>cURL</h3>
-
-        <p><a href="https://curl.haxx.se/">cURL</a> is a popular command line tool that usese its own HTTP stack and is available on all platforms.</p>
-
-        <h3>Postman</h3>
-
-        <p><a href="https://www.postman.com/">Postman</a> is a REST client that allows us to test REST API's.  It allows us to create http request and generate the equivalent cURL commands we can use.  It creates multiple environments for Dev, Test, Pre-Prod as each environment has different configurations.</p>
-
-        <h3>GraphiQL</h3>
-
-        <p><a href="https://www.electronjs.org/apps/graphiql">GraphiQL</a> is a light weight electron based application for writing GraphQL queries and mutations.</p>
-
-        <h3>Burp</h3>
-
-        <p><a href="https://portswigger.net/burp">Burp</a> is a HTTP debugger that let us see the web traffic that goes between the client and the API. It runs as a proxy between the client and the server. This allows us to intercept the request and the reponse and modify them to create scenarios that are otherwise difficult to test without changing the client. It is a suite of tools that is mainly used for security testing but it can be very useful for API testing as well. Set up your postman to send request to Burp proxy and configure Burp to intercept client request and server response. Intercept request and response as shown below.</p>
-
-        <h3>Wireshark</h3>
-
-        <p><a href="https://www.wireshark.org/">Wireshark</a> allows for verification of some features of API, e.g., encryption, compression, etc., will require us to look a level deeper to see what is being sent and received on the network. Wireshark is a tool that monitors network interface and keeps a copy of all TCP packets that pass through it. Traffic is split by layers — HTTP, TCP, IP, etc. It also helps us to troubleshoot issues that require us to go deeper, e.g., TLS handshake.</p>
-
-        <h3>JMeter</h3>
-
-        <p><a href="https://jmeter.apache.org/">JMeter</a> is a load testing tool which can help test the amount of load that can be placed on your API and make sure that quotas, limits and DoS attacks will not affect your other cutomers.</p>
-
-        <h2>Useful Links</h2>
-
-        <p>Other useful links to gather information from:</p>
-
-        <ul>
-            <li><a href="https://dzone.com/storage/assets/9815686-dzone-refcard129-restfularchitecture.pdf">DZone Refcard on RESTful Architecture</a></li>
-            <li><a href="https://www.canada.ca/en/government/system/digital-government/modern-emerging-technologies/government-canada-standards-apis.html">Government of Canada Standards on API's</a></li>
-            <li><a href="https://www.gov.uk/guidance/gds-api-technical-and-data-standards#when-to-authenticate-your-api">API Authentication</a></li>
-            <li><a href="https://backendless.com/docs/images/shared/backendless-architecture.png">Backendless Architecture (Picture)</a></li>
-            <li><a href="https://www.getpostman.com/">Postman</a></li>
-            <li><a href="https://www.yworks.com/products/yed">yEd Image Editor</a></li>
-            <li><a href="http://json-schema.org/">JSON Schema</a></li>
-            <li><a href="https://json-ld.org/">JSON Linked Data</a></li>
-        </ul>
-        
     </section>
 
 </body>
