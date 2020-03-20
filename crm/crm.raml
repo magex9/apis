@@ -56,25 +56,16 @@
     body:
       application/x-www-form-urlencoded:
         properties:
-          status:
-            description: "The organizations status"
-            required: false
-            type: string
-            example: active
           displayName:
             description: "The preferred display name of the organization"
-            required: false
+            required: true
             type: string
-            example: "Bank"
-          country:
-            description: "The country of the main location of the organization"
-            required: false
-            type: string
-            example: "CA"
+            example: "My Organization"
     responses:
       200:
         body:
           application/json:
+            type: organization
             example: |
               {
                 "organizationId": "100200",
@@ -82,6 +73,16 @@
                 "name": "My Organization",
                 "modified": "2020-04-01T15:43:17Z"
               }
+      403:
+        body:
+          application/json:
+            example: |
+              {"message": "Permission Denied"}
+      404:
+        body:
+          application/json:
+            example: |
+              {"message": "Organization not found"}
 /organizations/{organizationId}:
   description: Details about an organization
   get:
@@ -108,4 +109,320 @@
           application/json:
             example: |
               {"message": "Organization not found"}
-              
+  post:
+    description: Update an organization
+    body:
+      application/x-www-form-urlencoded:
+        properties:
+          displayName:
+            description: "The preferred display name of the organization"
+            required: true
+            type: string
+            example: "My Organization"
+          location:
+            description: "The main location of the orgainzation"
+            required: true
+            type: location
+            example: |
+              {
+                "street": "123 Main St",
+                "city": "Ottawa",
+                "province": "Ontario",
+                "country": "Canada",
+                "postalCode": "K1K1K1"
+              }
+    responses:
+      200:
+        body:
+          application/json:
+            type: organization
+            example: |
+              {
+                "organizationId": "100200",
+                "status": "active",
+                "name": "My Organization",
+                "mainLocation": {
+                  "street": "123 Main St",
+                  "city": "Ottawa",
+                  "province": "Ontario",
+                  "country": "Canada",
+                  "postalCode": "K1K1K1"
+                }
+                "modified": "2020-04-01T15:43:17Z"
+              }
+      403:
+        body:
+          application/json:
+            example: |
+              {"message": "Permission Denied"}
+      404:
+        body:
+          application/json:
+            example: |
+              {"message": "Organization not found"}
+/organizations/{organizationId}/enable:
+  description: Enable an organization
+  get:
+    description: Enable an organization
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {"status": "active"}
+      403:
+        body:
+          application/json:
+            example: |
+              {"message": "Permission Denied"}
+      404:
+        body:
+          application/json:
+            example: |
+              {"message": "Organization not found"}
+/organizations/{organizationId}/disable:
+  description: Disable an organization
+  get:
+    description: Disable an organizaiton
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {"status": "active"}
+      403:
+        body:
+          application/json:
+            example: |
+              {"message": "Permission Denied"}
+      404:
+        body:
+          application/json:
+            example: |
+              {"message": "Organization not found"}
+/locations:
+  description: Complete collection of locations
+  get:
+    description: Get a list of locations
+    body:
+      application/x-www-form-urlencoded:
+        properties:
+          status:
+            description: "The locations status"
+            required: false
+            type: string
+            example: active
+          locationReference:
+            description: "The organization reference to the location"
+            required: false
+            type: string
+            example: "Bank"
+          country:
+            description: "The country of the main location of the organization"
+            required: false
+            type: string
+            example: "CA"
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "locations": [
+                  {
+                    "street": "500 Bank Street",
+                    "city": "Ottawa",
+                    "province": "Ontario",
+                    "country": "Canada",
+                    "modified": "2020-02-11T12:34:56Z"
+                  },{
+                    "street": "234 Main Street",
+                    "city": "Ottawa",
+                    "province": "Ontario",
+                    "country": "Canada",
+                    "modified": "2019-11-13T14:50:34Z"
+                  }
+                ]
+              }
+  put:
+    description: Create a new location
+    body:
+      application/x-www-form-urlencoded:
+        properties:
+          organizationId:
+            description: "The organization the location belongs to"
+            required: true
+            type: number
+            example: "12345"
+          locationName:
+            description: "The display name of the location"
+            required: true
+            type: string
+            example: "Bank Street"
+          locationReference:
+            description: "The organizations internal reference for the location"
+            required: true
+            type: string
+            example: "OTTAWA-3939"
+          street:
+            description: "Street address of the location"
+            required: true
+            type: string
+            example: "500 Bank Street"
+          city:
+            description: "City of the location"
+            required: true
+            type: string
+            example: "Ottawa"
+          province:
+            description: "Province of the location"
+            required: true
+            type: string
+            example: "Ontario"
+          country:
+            description: "Country of the location"
+            required: true
+            type: string
+            example: "Canada"
+    responses:
+      200:
+        body:
+          application/json:
+            type: location
+            example: |
+              {
+                "street": "500 Bank Street",
+                "city": "Ottawa",
+                "province": "Ontario",
+                "country": "Canada",
+                "modified": "2020-02-11T12:34:56Z"
+              }
+      403:
+        body:
+          application/json:
+            example: |
+              {"message": "Permission Denied"}
+      404:
+        body:
+          application/json:
+            example: |
+              {"message": "Location not found"}
+/locations/{locationId}:
+  description: Details about an location
+  get:
+    description: Get all the details for an location
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "street": "500 Bank Street",
+                "city": "Ottawa",
+                "province": "Ontario",
+                "country": "Canada",
+                "modified": "2020-02-11T12:34:56Z"
+              }
+      403:
+        body:
+          application/json:
+            example: |
+              {"message": "Permission Denied"}
+      404:
+        body:
+          application/json:
+            example: |
+              {"message": "Location not found"}
+  post:
+    description: Update an location
+    body:
+      application/x-www-form-urlencoded:
+        properties:
+          locationName:
+            description: "The display name of the location"
+            required: true
+            type: string
+            example: "Bank Street"
+          street:
+            description: "Street address of the location"
+            required: true
+            type: string
+            example: "500 Bank Street"
+          city:
+            description: "City of the location"
+            required: true
+            type: string
+            example: "Ottawa"
+          province:
+            description: "Province of the location"
+            required: true
+            type: string
+            example: "Ontario"
+          country:
+            description: "Country of the location"
+            required: true
+            type: string
+            example: "Canada"
+    responses:
+      200:
+        body:
+          application/json:
+            type: location
+            example: |
+              {
+                "street": "500 Bank Street",
+                "city": "Ottawa",
+                "province": "Ontario",
+                "country": "Canada",
+                "modified": "2020-02-11T12:34:56Z"
+              }
+      403:
+        body:
+          application/json:
+            example: |
+              {"message": "Permission Denied"}
+      404:
+        body:
+          application/json:
+            example: |
+              {"message": "Location not found"}
+/locations/{locationId}/enable:
+  description: Enable an location
+  get:
+    description: Enable an location
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {"status": "active"}
+      403:
+        body:
+          application/json:
+            example: |
+              {"message": "Permission Denied"}
+      404:
+        body:
+          application/json:
+            example: |
+              {"message": "Location not found"}
+/locations/{locationId}/disable:
+  description: Disable an location
+  get:
+    description: Disable an organizaiton
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {"status": "active"}
+      403:
+        body:
+          application/json:
+            example: |
+              {"message": "Permission Denied"}
+      404:
+        body:
+          application/json:
+            example: |
+              {"message": "Location not found"}
