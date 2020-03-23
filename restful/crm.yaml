@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
   version: 1.0.0
-  title: Swagger Reporting
+  title: Swagger Reporting!
 host: magex9.github.io
 basePath: /apis/restful
 schemes:
@@ -11,22 +11,22 @@ consumes:
 produces:
   - application/json
 paths:
-  /pets:
+  /organizations:
     get:
-      summary: List all pets
-      operationId: listPets
+      summary: List all organizations
+      operationId: listOrganizations
       tags:
         - pets
       parameters:
-        - name: limit
+        - name: displayName
           in: query
-          description: How many items to return at one time (max 100)
+          description: Find an organization by its name
           required: false
-          type: integer
-          format: int32
+          type: text
+          format: string
       responses:
         "200":
-          description: A paged array of pets
+          description: A paged array of organizations
           headers:
             x-next:
               type: string
@@ -49,10 +49,10 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /pets/{petId}:
+  /organizations/{organizationId}:
     get:
-      summary: Info for a specific pet
-      operationId: showPetById
+      summary: Info for a specific organization
+      operationId: showOrganizationById
       tags:
         - pets
       parameters:
