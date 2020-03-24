@@ -1,163 +1,219 @@
-swagger: "2.0"
+openapi: 3.0.0
 info:
   version: 1.0.0
-  title: Swagger Reporting!
-host: magex9.github.io
-basePath: /apis/restful
-consumes:
-  - application/json
-produces:
-  - application/json
+  title: API Reporting
+servers:
+  - url: https://magex9.github.io/apis/restful/{environment}/v0
+    description: Test server (uses shared data)
+    variables:
+      environment:
+        default: production
+        enum:
+          - production
+          - training
+          - preview
+  - url: http://localhost/apis/restful/v0
+    description: Local development (uses test data)
 paths:
   /organizations:
     get:
       summary: List all organizations
-      operationId: listOrganizations
+      operationId: findOrganizations
       tags:
-        - organizations
+        - Organizations
       parameters:
-        - name: displayName
-          in: query
+        - in: query
+          name: displayName
           description: Find an organization by its name
           required: false
-          type: string
+          schema: 
+            type: string
       responses:
         "200":
           description: A paged array of organizations
           headers:
+            X-Rate-Limit-Limit:
+              description: The number of allowed requests in the current period
+              schema:
+                type: integer
+            X-Rate-Limit-Remaining:
+              description: The number of remaining requests in the current period
+              schema:
+                type: integer
+            X-Rate-Limit-Reset:
+              description: The number of seconds left in the current period
+              schema:
+                type: integer
             x-next:
-              type: string
               description: A link to the next page of responses
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/Organization'
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Organization'
         default:
           description: System error
-          schema:
-            type: string
-            example: '{error: Something went wrong...}'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
     post:
       summary: Create an organization
       operationId: createOrganization
       tags:
-        - organizations
+        - Organizations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                displayName:
+                  description: The prefered display name of the organization
+                  type: string
+              required: 
+                - displayName
       responses:
         "201":
-          description: Null response
+          description: A forward response to the newly created organization
         default:
-          description: unexpected error
-          schema:
-            type: string
-            example: '{error: Something went wrong...}'
+          description: System error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
   /organizations/{organizationId}:
     get:
       summary: Info for a specific organization
       operationId: showOrganizationById
       tags:
-        - organizations
+        - Organizations
       parameters:
         - name: organizationId
           in: path
           required: true
           description: The id of the organization to retrieve
-          type: string
+          content:
+            application/json:
+              schema:
+                type: string
       responses:
         "200":
           description: Expected response to a valid request
-          schema:
-            $ref: '#/definitions/Organization'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
         default:
-          description: unexpected error
-          schema:
+          description: System error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+components:
+  schemas:
+    Status:
+      enum:
+        - active
+        - inactive
+        - pending
+    Organization:
+      type: object
+      required:
+        - organizationId
+        - status
+        - displayName
+      properties:
+        organizationId:
+          type: integer
+          format: int64
+        status:
+          type: string
+        displayName:
+          type: string
+        mainLocation:
+          $ref: '#/components/schemas/Location'
+    Location:
+      type: object
+      required: 
+        - locationId
+        - organizationId
+        - status
+        - locationReference
+        - displayName
+        - address
+      properties:
+        locationId:
+          type: string
+        organizationId:
+          type: string
+        status:
+          type: string
+        locationReference:
+          type: string
+        displayName:
+          type: string
+        address: 
+          $ref: '#/components/schemas/MailingAddress'
+    Country:
+      type: object
+      properties: 
+        code: 
+          type: string
+        name:
+          type: string
+    Language:
+      type: object
+      properties: 
+        code: 
+          type: string
+        name:
+          type: string
+    Salutation:
+      type: object
+      properties: 
+        code: 
+          type: integer
+        name:
+          type: string
+    MailingAddress:
+      type: object
+      properties: 
+        street:
+          type: string
+        city:
+          type: string
+        province:
+          type: string
+        country:
+          type: string
+        postalCode:
+          type: string
+    Message:
+      type: object
+      required:
+        - base
+        - type
+        - path
+        - message
+      properties:
+        base:
+          type: object
+        type:
+          type: string
+        path:
+          type: string
+        message:
+          type: string
+    ErrorModel:
+      type: object
+      properties:
+        reason:
+          type: string
+        stack: 
+          type: array
+          items:
             type: string
-            example: '{error: Something went wrong...}'
-definitions:
-  Organization:
-    type: "object"
-    required:
-      - organizationId
-      - status
-      - displayName
-    properties:
-      organizationId:
-        type: integer
-        format: int64
-      status:
-        type: string
-      displayName:
-        type: string
-      mainLocation:
-        $ref: "#/definitions/Location"
-  Location:
-    type: "object"
-    required: 
-      - locationId
-      - organizationId
-      - status
-      - locationReference
-      - displayName
-      - address
-    properties:
-      locationId:
-        type: "string"
-      organizationId:
-        type: "string"
-      status:
-        type: "string"
-      locationReference:
-        type: "string"
-      displayName:
-        type: "string"
-      address: 
-        $ref: "#/definitions/MailingAddress"
-  Country:
-    type: "object"
-    properties: 
-      code: 
-        type: "string"
-      name:
-        type: "string"
-  Language:
-    type: "object"
-    properties: 
-      code: 
-        type: "string"
-      name:
-        type: "string"
-  Salutation:
-    type: "object"
-    properties: 
-      code: 
-        type: "integer"
-      name:
-        type: "string"
-  MailingAddress:
-    type: "object"
-    properties: 
-      street:
-        type: string
-      city:
-        type: string
-      province:
-        type: string
-      country:
-        $ref: "#/definitions/Country"
-      postalCode:
-        type: string
-  Message:
-    type: "object"
-    required:
-      - base
-      - type
-      - path
-      - message
-    properties:
-      base:
-        type: object
-      type:
-        type: string
-      path:
-        type: string
-      message:
-        type: string
