@@ -4,8 +4,6 @@ info:
   title: Swagger Reporting!
 host: magex9.github.io
 basePath: /apis/restful
-schemes:
-  - http
 consumes:
   - application/json
 produces:
@@ -16,14 +14,13 @@ paths:
       summary: List all organizations
       operationId: listOrganizations
       tags:
-        - pets
+        - organizations
       parameters:
         - name: displayName
           in: query
           description: Find an organization by its name
           required: false
-          type: text
-          format: string
+          type: string
       responses:
         "200":
           description: A paged array of organizations
@@ -32,70 +29,135 @@ paths:
               type: string
               description: A link to the next page of responses
           schema:
-            $ref: '#/definitions/Pets'
+            type: array
+            items:
+              $ref: '#/definitions/Organization'
         default:
-          description: unexpected error
+          description: System error
           schema:
-            $ref: '#/definitions/Error'
+            type: string
+            example: '{error: Something went wrong...}'
     post:
-      summary: Create a pet
-      operationId: createPets
+      summary: Create an organization
+      operationId: createOrganization
       tags:
-        - pets
+        - organizations
       responses:
         "201":
           description: Null response
         default:
           description: unexpected error
           schema:
-            $ref: '#/definitions/Error'
+            type: string
+            example: '{error: Something went wrong...}'
   /organizations/{organizationId}:
     get:
       summary: Info for a specific organization
       operationId: showOrganizationById
       tags:
-        - pets
+        - organizations
       parameters:
-        - name: petId
+        - name: organizationId
           in: path
           required: true
-          description: The id of the pet to retrieve
+          description: The id of the organization to retrieve
           type: string
       responses:
         "200":
           description: Expected response to a valid request
           schema:
-            $ref: '#/definitions/Pets'
+            $ref: '#/definitions/Organization'
         default:
           description: unexpected error
           schema:
-            $ref: '#/definitions/Error'
+            type: string
+            example: '{error: Something went wrong...}'
 definitions:
-  Pet:
+  Organization:
     type: "object"
     required:
-      - id
-      - name
+      - organizationId
+      - status
+      - displayName
     properties:
-      id:
+      organizationId:
         type: integer
         format: int64
+      status:
+        type: string
+      displayName:
+        type: string
+      mainLocation:
+        $ref: "#/definitions/Location"
+  Location:
+    type: "object"
+    required: 
+      - locationId
+      - organizationId
+      - status
+      - locationReference
+      - displayName
+      - address
+    properties:
+      locationId:
+        type: "string"
+      organizationId:
+        type: "string"
+      status:
+        type: "string"
+      locationReference:
+        type: "string"
+      displayName:
+        type: "string"
+      address: 
+        $ref: "#/definitions/MailingAddress"
+  Country:
+    type: "object"
+    properties: 
+      code: 
+        type: "string"
       name:
+        type: "string"
+  Language:
+    type: "object"
+    properties: 
+      code: 
+        type: "string"
+      name:
+        type: "string"
+  Salutation:
+    type: "object"
+    properties: 
+      code: 
+        type: "integer"
+      name:
+        type: "string"
+  MailingAddress:
+    type: "object"
+    properties: 
+      street:
         type: string
-      tag:
+      city:
         type: string
-  Pets:
-    type: array
-    items:
-      $ref: '#/definitions/Pet'
-  Error:
+      province:
+        type: string
+      country:
+        $ref: "#/definitions/Country"
+      postalCode:
+        type: string
+  Message:
     type: "object"
     required:
-      - code
+      - base
+      - type
+      - path
       - message
     properties:
-      code:
-        type: integer
-        format: int32
+      base:
+        type: object
+      type:
+        type: string
+      path:
+        type: string
       message:
         type: string
