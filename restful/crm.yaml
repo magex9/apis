@@ -138,6 +138,15 @@ paths:
       operationId: updateOrganization
       tags:
         - Organizations
+      parameters:
+        - name: organizationId
+          in: path
+          required: true
+          description: The identifier of the organization to retrieve
+          content:
+            application/json:
+              schema:
+                type: string
       requestBody:
         content:
           application/json:
@@ -355,6 +364,15 @@ paths:
       operationId: updateLocation
       tags:
         - Locations
+      parameters:
+        - name: locationId
+          in: path
+          required: true
+          description: The identifier of the location to retrieve
+          content:
+            application/json:
+              schema:
+                type: string
       requestBody:
         content:
           application/json:
@@ -571,6 +589,15 @@ paths:
       operationId: updatePerson
       tags:
         - Persons
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          description: The identifier of the person to retrieve
+          content:
+            application/json:
+              schema:
+                type: string
       requestBody:
         content:
           application/json:
@@ -664,7 +691,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SystemException'
-  /persons/{personId}/roles:
+  /persons/{personId}/roles/{roleId}:
     post:
       summary: Grant a user role to a person
       operationId: addUserRole
@@ -680,11 +707,14 @@ paths:
               schema:
                 type: string
                 format: identifier
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Role'
+        - name: roleId
+          in: path
+          required: true
+          description: The roleId to grant
+          content:
+            application/json:
+              schema:
+                type: integer
       responses:
         "200":
           description: Expected response to a valid request
@@ -719,11 +749,14 @@ paths:
               schema:
                 type: string
                 format: identifier
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Role'
+        - name: roleId
+          in: path
+          required: true
+          description: The roleId to grant
+          content:
+            application/json:
+              schema:
+                type: integer
       responses:
         "200":
           description: Expected response to a valid request
