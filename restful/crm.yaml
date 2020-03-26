@@ -3,15 +3,17 @@ info:
   version: 1.0.0
   title: API Reporting
 servers:
-  - url: https://magex9.github.io/apis/restful/{environment}/v0
+#  - url: https://magex9.github.io/apis/restful/{environment}/v0
+#    description: Test server (uses shared data)
+#    variables:
+#      environment:
+#        default: production
+#        enum:
+#          - production
+#          - training
+#          - preview
+  - url: https://magex9.github.io/apis/restful/v0
     description: Test server (uses shared data)
-    variables:
-      environment:
-        default: production
-        enum:
-          - production
-          - training
-          - preview
   - url: http://localhost/apis/restful/v0
     description: Local development (uses test data)
 paths:
@@ -115,12 +117,8 @@ paths:
                 $ref: '#/components/schemas/ErrorModel'
 components:
   schemas:
-    Status:
-      enum:
-        - active
-        - inactive
-        - pending
     Organization:
+      description: Information about a business or company
       type: object
       required:
         - organizationId
@@ -128,58 +126,214 @@ components:
         - displayName
       properties:
         organizationId:
-          type: integer
-          format: int64
-        status:
+          description: The auto generated identifier of the organization
           type: string
+          format: identifier
+        status:
+          $ref: '#/components/schemas/Status'
         displayName:
+          description: The preferred display name of the organization
           type: string
         mainLocation:
           $ref: '#/components/schemas/Location'
     Location:
+      description: Information about a physical location owned by an organization
       type: object
       required: 
         - locationId
         - organizationId
         - status
-        - locationReference
+        - reference
         - displayName
         - address
       properties:
         locationId:
+          description: The auto generated identifier of the location
           type: string
+          format: identifier
         organizationId:
+          description: The identifier reference the location belongs to
           type: string
+          format: identifier
         status:
+          $ref: '#/components/schemas/Status'
+        reference:
+          description: An organizations external reference number to the location.
           type: string
-        locationReference:
-          type: string
+          pattern: '^[A-Z0-9]{0,10}$'
         displayName:
+          description: The preferred display name of the location
           type: string
         address: 
           $ref: '#/components/schemas/MailingAddress'
+    Person:
+      description: Information about a person that is associated with an organization
+      type: object
+      required:
+        - personId
+        - organizationId
+        - status
+        - displayName
+      properties:
+        personId:
+          description: The auto generated identifier of the person
+          type: string
+          format: identifier
+        organizationId:
+          description: The identifier reference the person is associated with
+          type: string
+          format: identifier
+        status:
+          $ref: '#/components/schemas/Status'
+        displayName:
+          description: The preferred display name of the location
+          type: string
+        legalName:
+          description: The legal name of the person
+          $ref: '#/components/schemas/PersonName'
+        address: 
+          $ref: '#/components/schemas/MailingAddress'
+        email:
+          description: The email address the user signed up with and can be contacted
+          type: string
+          format: email
+        jobTitle:
+          description: The job title of the person
+          type: string
+        language:
+          description: The preferred language of the person
+          $ref: '#/components/schemas/Person'
+        homePhone:
+          description: The telephone number where the person can be contacted
+          $ref: '#/components/schemas/TelephoneNumber'
+        faxNumber:
+          description: The fax number if the person has one
+          type: number
+        userName:
+          description: The username the person can use to gain access to the system
+          type: string
+        roles:
+          description: The roles the assigned to the user
+          type: array
+          items:
+            type: string
+    Status:
+      description: The status of an entity
+      type: string
+      enum:
+        - active
+        - inactive
+        - pending
+    Activation:
+      description: Information about when an entity has been activated.  If an entity has been enabled and disabled multiple times, there will be multiple activation objects.
+      type: object
+      required:
+        - identifier
+        - enabled
+      properties:
+        identifier:
+          description: The identifier of the entity that was activate
+          type: string
+          format: identifier
+        enabled:
+          description: The date and time the entity was enabled
+          type: string
+          format: date-time
+        disabled:
+          description: The date and time the entity was disabled
+          type: string
+          format: date-time
+    Message:
+      description: A message about an entity
+      type: object
+      required:
+        - identifier
+        - type
+        - message
+      properties:
+        identifier:
+          description: The identifier of the entity related to the message
+          type: string
+          format: identifier
+        type:
+          description: The type of message (error, warning, info, etc)
+          type: string
+        path:
+          description: The path to a value within the entity
+          type: string
+        message:
+          description: A text the user sees about the message
+          type: string
     Country:
+      description: A common dictionary of ISO countries
       type: object
       properties: 
         code: 
+          description: The iso code of the country
           type: string
+          pattern: '^[A-Z]{2}$'
         name:
+          description: The localized name of the country shown to the user
           type: string
     Language:
+      description: A common dictionary of ISO languages
       type: object
       properties: 
         code: 
+          description: The iso code of the language
           type: string
+          pattern: '^[a-z]{2}$'
         name:
+          description: The localized name of the language shown to the user
           type: string
     Salutation:
+      description: A common dictionary of salutations
       type: object
       properties: 
         code: 
+          description: The code definition of the salutation
           type: integer
         name:
+          description: The localized name of the salutation shown to the user
+          type: string
+    PersonName:
+      description: The full name of an individual
+      type: object
+      properties:
+        salutation:
+          description: The salutation of the individual
+          $ref: '#/components/schemas/Salutation'
+        firstName:
+          description: The first name of the individual
+          type: string
+        middleName:
+          description: The middle name or initial of the individual
+          type: string
+        lastName:
+          description: The last name of the individual
+          type: string
+    TelephoneNumber:
+      description: A telephone number
+      type: object
+      properties:
+        number:
+          description: The full number of the telephone
+          type: number
+        extension:
+          description: The extension of the contact if there is one
+          type: number
+    Role:
+      description: A set of privileges that can be given to a user
+      type: object
+      properties: 
+        code: 
+          description: The code definition of the role
+          type: integer
+        name:
+          description: The localized name of the role shown to the user
           type: string
     MailingAddress:
+      description: A postal mailing address
       type: object
       properties: 
         street:
@@ -189,24 +343,8 @@ components:
         province:
           type: string
         country:
-          type: string
+          $ref: '#/components/schemas/Country'
         postalCode:
-          type: string
-    Message:
-      type: object
-      required:
-        - base
-        - type
-        - path
-        - message
-      properties:
-        base:
-          type: object
-        type:
-          type: string
-        path:
-          type: string
-        message:
           type: string
     ErrorModel:
       type: object
