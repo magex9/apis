@@ -234,6 +234,515 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SystemException'
+  /locations:
+    get:
+      summary: List all locations
+      operationId: findLocations
+      tags:
+        - Locations
+      parameters:
+        - in: query
+          name: displayName
+          description: Find a location by its name
+          required: false
+          schema: 
+            type: string
+        - in: query
+          name: status
+          description: Find locations in a certian status
+          required: false
+          schema:
+            $ref: '#/components/schemas/Status'
+      responses:
+        "200":
+          description: A paged array of locations
+          headers:
+            X-Rate-Limit-Limit:
+              description: The number of allowed requests in the current period
+              schema:
+                type: integer
+            X-Rate-Limit-Remaining:
+              description: The number of remaining requests in the current period
+              schema:
+                type: integer
+            X-Rate-Limit-Reset:
+              description: The number of seconds left in the current period
+              schema:
+                type: integer
+            x-next:
+              description: A link to the next page of responses
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Location'
+        default:
+          description: System error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemException'
+    post:
+      summary: Create a location
+      operationId: createLocation
+      tags:
+        - Locations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: 
+                - displayName
+              properties:
+                displayName:
+                  description: The prefered display name of the location
+                  type: string
+      responses:
+        "201":
+          description: A forward response to the newly created location
+        "403":
+          description: Permission denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionException'
+        default:
+          description: System error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemException'
+  /locations/{locationId}:
+    get:
+      summary: Get information about a specific location
+      operationId: findLocation
+      tags:
+        - Locations
+      parameters:
+        - name: locationId
+          in: path
+          required: true
+          description: The identifier of the location to retrieve
+          content:
+            application/json:
+              schema:
+                type: string
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Location'
+        "403":
+          description: Permission denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionException'
+        default:
+          description: System error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemException'
+    patch:
+      summary: Update a location
+      operationId: updateLocation
+      tags:
+        - Locations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                displayName:
+                  description: The prefered display name of the location
+                  type: string
+                address:
+                  description: The address of the location
+                  $ref: "#/components/schemas/MailingAddress"
+      responses:
+        "201":
+          description: A forward response to the updated location
+        "403":
+          description: Permission denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionException'
+        default:
+          description: System error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemException'
+  /locations/{locationId}/enable:
+    put:
+      summary: Activate the given location if they are inactive
+      operationId: enableLocation
+      tags:
+        - Locations
+      parameters:
+        - name: locationId
+          in: path
+          required: true
+          description: The identifier of the location to enable
+          content:
+            application/json:
+              schema:
+                type: string
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        "403":
+          description: Permission denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionException'
+        default:
+          description: System error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemException'
+  /locations/{locationId}/disable:
+    put:
+      summary: Inactivate the given locations if they are active
+      operationId: disableLocation
+      tags:
+        - Locations
+      parameters:
+        - name: locationId
+          in: path
+          required: true
+          description: The identifier of the location to disable
+          content:
+            application/json:
+              schema:
+                type: string
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        "403":
+          description: Permission denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionException'
+        default:
+          description: System error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemException'
+  /persons:
+    get:
+      summary: List all people
+      operationId: findPersons
+      tags:
+        - Persons
+      parameters:
+        - in: query
+          name: displayName
+          description: Find a person by their name
+          required: false
+          schema: 
+            type: string
+        - in: query
+          name: status
+          description: Find people in a certian status
+          required: false
+          schema:
+            $ref: '#/components/schemas/Status'
+      responses:
+        "200":
+          description: A paged array of people
+          headers:
+            X-Rate-Limit-Limit:
+              description: The number of allowed requests in the current period
+              schema:
+                type: integer
+            X-Rate-Limit-Remaining:
+              description: The number of remaining requests in the current period
+              schema:
+                type: integer
+            X-Rate-Limit-Reset:
+              description: The number of seconds left in the current period
+              schema:
+                type: integer
+            x-next:
+              description: A link to the next page of responses
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Person'
+        default:
+          description: System error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemException'
+    post:
+      summary: Create a person
+      operationId: createPerson
+      tags:
+        - Persons
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: 
+                - displayName
+              properties:
+                displayName:
+                  description: The prefered display name of the person
+                  type: string
+      responses:
+        "201":
+          description: A forward response to the newly created person
+        "403":
+          description: Permission denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionException'
+        default:
+          description: System error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemException'
+  /persons/{personId}:
+    get:
+      summary: Get information about a specific person
+      operationId: findPerson
+      tags:
+        - Persons
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          description: The identifier of the person to retrieve
+          content:
+            application/json:
+              schema:
+                type: string
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
+        "403":
+          description: Permission denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionException'
+        default:
+          description: System error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemException'
+    patch:
+      summary: Update a person
+      operationId: updatePerson
+      tags:
+        - Persons
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                displayName:
+                  description: The prefered display name of the person
+                  type: string
+      responses:
+        "201":
+          description: A forward response to the updated person
+        "403":
+          description: Permission denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionException'
+        default:
+          description: System error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemException'
+  /persons/{personId}/enable:
+    put:
+      summary: Activate the given person if they are inactive
+      operationId: enablePerson
+      tags:
+        - Persons
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          description: The identifier of the person to enable
+          content:
+            application/json:
+              schema:
+                type: string
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        "403":
+          description: Permission denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionException'
+        default:
+          description: System error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemException'
+  /persons/{personId}/disable:
+    put:
+      summary: Inactivate the given person if they are active
+      operationId: disablePerson
+      tags:
+        - Persons
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          description: The identifier of the person to disable
+          content:
+            application/json:
+              schema:
+                type: string
+                format: identifier
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        "403":
+          description: Permission denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionException'
+        default:
+          description: System error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemException'
+  /persons/{personId}/roles:
+    post:
+      summary: Grant a user role to a person
+      operationId: addUserRole
+      tags:
+        - Persons
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          description: The identifier of the person who is granted the role
+          content:
+            application/json:
+              schema:
+                type: string
+                format: identifier
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Role'
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+        "403":
+          description: Permission denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionException'
+        default:
+          description: System error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemException'
+    delete:
+      summary: Revoke a user role from a person
+      operationId: removeUserRole
+      tags:
+        - Persons
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          description: The identifier of the person the role is revoked
+          content:
+            application/json:
+              schema:
+                type: string
+                format: identifier
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Role'
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+        "403":
+          description: Permission denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionException'
+        default:
+          description: System error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemException'
 components:
   schemas:
     Organization:
