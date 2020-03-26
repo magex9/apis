@@ -30,6 +30,12 @@ paths:
           required: false
           schema: 
             type: string
+        - in: query
+          name: status
+          description: Find organizations in a certian status
+          required: false
+          schema:
+            $ref: '#/components/schemas/Status'
       responses:
         "200":
           description: A paged array of organizations
@@ -61,7 +67,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorModel'
+                $ref: '#/components/schemas/SystemException'
     post:
       summary: Create an organization
       operationId: createOrganization
@@ -72,32 +78,38 @@ paths:
           application/json:
             schema:
               type: object
+              required: 
+                - displayName
               properties:
                 displayName:
                   description: The prefered display name of the organization
                   type: string
-              required: 
-                - displayName
       responses:
         "201":
           description: A forward response to the newly created organization
+        "403":
+          description: Permission denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionException'
         default:
           description: System error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorModel'
+                $ref: '#/components/schemas/SystemException'
   /organizations/{organizationId}:
     get:
-      summary: Info for a specific organization
-      operationId: showOrganizationById
+      summary: Get information about a specific organization
+      operationId: findOrganization
       tags:
         - Organizations
       parameters:
         - name: organizationId
           in: path
           required: true
-          description: The id of the organization to retrieve
+          description: The identifier of the organization to retrieve
           content:
             application/json:
               schema:
@@ -109,12 +121,119 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Organization'
+        "403":
+          description: Permission denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionException'
         default:
           description: System error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorModel'
+                $ref: '#/components/schemas/SystemException'
+    patch:
+      summary: Update an organization
+      operationId: updateOrganization
+      tags:
+        - Organizations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                displayName:
+                  description: The prefered display name of the organization
+                  type: string
+                mainLocationId:
+                  description: The main location of the organization
+                  type: string
+                  format: identifier
+      responses:
+        "201":
+          description: A forward response to the newly created organization
+        "403":
+          description: Permission denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionException'
+        default:
+          description: System error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemException'
+  /organizations/{organizationId}/enable:
+    put:
+      summary: Activate the given organization if they are inactive
+      operationId: enableOrganization
+      tags:
+        - Organizations
+      parameters:
+        - name: organizationId
+          in: path
+          required: true
+          description: The identifier of the organization to enable
+          content:
+            application/json:
+              schema:
+                type: string
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        "403":
+          description: Permission denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionException'
+        default:
+          description: System error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemException'
+  /organizations/{organizationId}/disable:
+    put:
+      summary: Inactivate the given organization if they are active
+      operationId: disableOrganization
+      tags:
+        - Organizations
+      parameters:
+        - name: organizationId
+          in: path
+          required: true
+          description: The identifier of the organization to disable
+          content:
+            application/json:
+              schema:
+                type: string
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        "403":
+          description: Permission denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionException'
+        default:
+          description: System error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemException'
 components:
   schemas:
     Organization:
@@ -202,7 +321,7 @@ components:
           type: string
         language:
           description: The preferred language of the person
-          $ref: '#/components/schemas/Person'
+          $ref: '#/components/schemas/Language'
         homePhone:
           description: The telephone number where the person can be contacted
           $ref: '#/components/schemas/TelephoneNumber'
@@ -346,7 +465,12 @@ components:
           $ref: '#/components/schemas/Country'
         postalCode:
           type: string
-    ErrorModel:
+    PermissionException:
+      type: object
+      properties:
+        reason:
+          type: string
+    SystemException:
       type: object
       properties:
         reason:
