@@ -61,7 +61,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Organization'
+                  $ref: '#/components/schemas/OrganizationSummary'
         default:
           description: System error
           content:
@@ -163,6 +163,80 @@ paths:
       responses:
         "201":
           description: A forward response to the newly created organization
+        "403":
+          description: Permission denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionException'
+        default:
+          description: System error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemException'
+  /organizations/{organizationId}/summary:
+    get:
+      summary: Get the summary for an organization
+      operationId: getOrganizationSummary
+      tags:
+        - Organizations
+      parameters:
+        - name: organizationId
+          in: path
+          required: true
+          description: The identifier of the organization to enable
+          content:
+            application/json:
+              schema:
+                type: string
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationSummary'
+        "403":
+          description: Permission denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionException'
+        "404":
+          description: Item not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ItemNotFoundException'
+        default:
+          description: System error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemException'
+  /organizations/{organizationId}/mainLocation:
+    get:
+      summary: Get the main location for an organization
+      operationId: getOrganizationMainLocation
+      tags:
+        - Organizations
+      parameters:
+        - name: organizationId
+          in: path
+          required: true
+          description: The identifier of the organization to enable
+          content:
+            application/json:
+              schema:
+                type: string
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Location'
         "403":
           description: Permission denied
           content:
@@ -287,7 +361,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Location'
+                  $ref: '#/components/schemas/LocationSummary'
         default:
           description: System error
           content:
@@ -388,6 +462,40 @@ paths:
       responses:
         "201":
           description: A forward response to the updated location
+        "403":
+          description: Permission denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionException'
+        default:
+          description: System error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemException'
+  /locations/{locationId}/summary:
+    get:
+      summary: Get the summary information about a location
+      operationId: getLocationSummary
+      tags:
+        - Locations
+      parameters:
+        - name: locationId
+          in: path
+          required: true
+          description: The identifier of the location to enable
+          content:
+            application/json:
+              schema:
+                type: string
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationSummary'
         "403":
           description: Permission denied
           content:
@@ -512,7 +620,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Person'
+                  $ref: '#/components/schemas/PersonSummary'
         default:
           description: System error
           content:
@@ -607,9 +715,228 @@ paths:
                 displayName:
                   description: The prefered display name of the person
                   type: string
+                legalName:
+                  description: The legal name of the person
+                  $ref: '#/components/schemas/PersonName'
+                address: 
+                  $ref: '#/components/schemas/MailingAddress'
+                communication:
+                  $ref: '#/components/schemas/Communication'
+                position:
+                  $ref: '#/components/schemas/BusinessPosition'
       responses:
         "201":
           description: A forward response to the updated person
+        "403":
+          description: Permission denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionException'
+        default:
+          description: System error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemException'
+  /persons/{personId}/summary:
+    get:
+      summary: Get the summary information about the person
+      operationId: getPersonSummary
+      tags:
+        - Persons
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          description: The identifier of the person to retrieve
+          content:
+            application/json:
+              schema:
+                type: string
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonSummary'
+        "403":
+          description: Permission denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionException'
+        default:
+          description: System error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemException'
+  /persons/{personId}/legalName:
+    get:
+      summary: Get the legal name of the person
+      operationId: getPersonName
+      tags:
+        - Persons
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          description: The identifier of the person to retrieve
+          content:
+            application/json:
+              schema:
+                type: string
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonName'
+        "403":
+          description: Permission denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionException'
+        default:
+          description: System error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemException'
+  /persons/{personId}/address:
+    get:
+      summary: Get the address of the person
+      operationId: getPersonAddress
+      tags:
+        - Persons
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          description: The identifier of the person to retrieve
+          content:
+            application/json:
+              schema:
+                type: string
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MailingAddress'
+        "403":
+          description: Permission denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionException'
+        default:
+          description: System error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemException'
+  /persons/{personId}/communication:
+    get:
+      summary: Get the communication information for the user
+      operationId: getPersonCommunication
+      tags:
+        - Persons
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          description: The identifier of the person to retrieve
+          content:
+            application/json:
+              schema:
+                type: string
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Communication'
+        "403":
+          description: Permission denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionException'
+        default:
+          description: System error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemException'
+  /persons/{personId}/position:
+    get:
+      summary: Get the position of the person
+      operationId: getPersonPosition
+      tags:
+        - Persons
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          description: The identifier of the person to retrieve
+          content:
+            application/json:
+              schema:
+                type: string
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessPosition'
+        "403":
+          description: Permission denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionException'
+        default:
+          description: System error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemException'
+  /persons/{personId}/user:
+    get:
+      summary: Get the user information of the person
+      operationId: getPersonUser
+      tags:
+        - Persons
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          description: The identifier of the person to retrieve
+          content:
+            application/json:
+              schema:
+                type: string
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "404":
+          description: Information not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ItemNotFoundException'
         "403":
           description: Permission denied
           content:
@@ -797,6 +1124,23 @@ components:
           type: string
         mainLocation:
           $ref: '#/components/schemas/Location'
+    OrganizationSummary:
+      description: Core information about a business or company
+      type: object
+      required:
+        - organizationId
+        - status
+        - displayName
+      properties:
+        organizationId:
+          description: The auto generated identifier of the organization
+          type: string
+          format: identifier
+        status:
+          $ref: '#/components/schemas/Status'
+        displayName:
+          description: The preferred display name of the organization
+          type: string
     Location:
       description: Information about a physical location owned by an organization
       type: object
@@ -827,6 +1171,33 @@ components:
           type: string
         address: 
           $ref: '#/components/schemas/MailingAddress'
+    LocationSummary:
+      description: Core information about a physical location
+      type: object
+      required: 
+        - locationId
+        - organizationId
+        - status
+        - reference
+        - displayName
+      properties:
+        locationId:
+          description: The auto generated identifier of the location
+          type: string
+          format: identifier
+        organizationId:
+          description: The identifier reference the location belongs to
+          type: string
+          format: identifier
+        status:
+          $ref: '#/components/schemas/Status'
+        reference:
+          description: An organizations external reference number to the location.
+          type: string
+          pattern: '^[A-Z0-9]{0,10}$'
+        displayName:
+          description: The preferred display name of the location
+          type: string
     Person:
       description: Information about a person that is associated with an organization
       type: object
@@ -854,22 +1225,49 @@ components:
           $ref: '#/components/schemas/PersonName'
         address: 
           $ref: '#/components/schemas/MailingAddress'
-        email:
-          description: The email address the user signed up with and can be contacted
+        communication:
+          $ref: '#/components/schemas/Communication'
+        position:
+          $ref: '#/components/schemas/BusinessPosition'
+        user:
+          $ref: '#/components/schemas/User'
+    PersonSummary:
+      description: Core information about a person
+      type: object
+      required:
+        - personId
+        - organizationId
+        - status
+        - displayName
+        - userName
+      properties:
+        personId:
+          description: The auto generated identifier of the person
           type: string
-          format: email
-        jobTitle:
-          description: The job title of the person
+          format: identifier
+        organizationId:
+          description: The identifier reference the person is associated with
           type: string
-        language:
-          description: The preferred language of the person
-          $ref: '#/components/schemas/Language'
-        homePhone:
-          description: The telephone number where the person can be contacted
-          $ref: '#/components/schemas/TelephoneNumber'
-        faxNumber:
-          description: The fax number if the person has one
-          type: number
+          format: identifier
+        status:
+          $ref: '#/components/schemas/Status'
+        displayName:
+          description: The preferred display name of the location
+          type: string
+        userName:
+          description: The username the person can use to gain access to the system
+          type: string
+    Status:
+      description: The status of an entity
+      type: string
+      enum:
+        - active
+        - inactive
+        - pending
+    User:
+      description: Information about user access to the system
+      type: object
+      properties:
         userName:
           description: The username the person can use to gain access to the system
           type: string
@@ -878,13 +1276,16 @@ components:
           type: array
           items:
             type: string
-    Status:
-      description: The status of an entity
-      type: string
-      enum:
-        - active
-        - inactive
-        - pending
+    Role:
+      description: A set of privileges that can be given to a user
+      type: object
+      properties: 
+        code: 
+          description: The code definition of the role
+          type: integer
+        name:
+          description: The localized name of the role shown to the user
+          type: string
     Activation:
       description: Information about when an entity has been activated.  If an entity has been enabled and disabled multiple times, there will be multiple activation objects.
       type: object
@@ -973,6 +1374,26 @@ components:
         lastName:
           description: The last name of the individual
           type: string
+    Communication:
+      description: Information on how an entity can be contacted
+      type: object
+      properties:
+        email:
+          description: The email address the user signed up with and can be contacted
+          type: string
+          format: email
+        jobTitle:
+          description: The job title of the person
+          type: string
+        language:
+          description: The preferred language of the person
+          $ref: '#/components/schemas/Language'
+        homePhone:
+          description: The telephone number where the person can be contacted
+          $ref: '#/components/schemas/TelephoneNumber'
+        faxNumber:
+          description: The fax number if the person has one
+          type: number
     TelephoneNumber:
       description: A telephone number
       type: object
@@ -983,15 +1404,48 @@ components:
         extension:
           description: The extension of the contact if there is one
           type: number
-    Role:
-      description: A set of privileges that can be given to a user
+    BusinessPosition:
+      description: Information about the position of a person in the business
+      type: object
+      properties: 
+        sector: 
+          description: The sector of the business the person belongs
+          $ref: '#/components/schemas/BusinessSector'
+        unit:
+          description: The unit within the sector
+          $ref: '#/components/schemas/BusinessUnit'
+        classification:
+          description: The classification of the person
+          $ref: '#/components/schemas/BusinessClassification'
+    BusinessSector:
+      description: A business sector within the orgainzation
       type: object
       properties: 
         code: 
-          description: The code definition of the role
+          description: The code definition of the sector
           type: integer
         name:
-          description: The localized name of the role shown to the user
+          description: The localized name of the sector shown to the user
+          type: string
+    BusinessUnit:
+      description: A business unit within a business sector
+      type: object
+      properties: 
+        code: 
+          description: The code definition of the unit
+          type: integer
+        name:
+          description: The localized name of the unit shown to the user
+          type: string
+    BusinessClassification:
+      description: A classification of a person within the organization
+      type: object
+      properties: 
+        code: 
+          description: The code definition of the classification
+          type: integer
+        name:
+          description: The localized name of the classification shown to the user
           type: string
     MailingAddress:
       description: A postal mailing address
@@ -1006,6 +1460,11 @@ components:
         country:
           $ref: '#/components/schemas/Country'
         postalCode:
+          type: string
+    ItemNotFoundException:
+      type: object
+      properties:
+        reason:
           type: string
     PermissionException:
       type: object
