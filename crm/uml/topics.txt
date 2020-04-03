@@ -1,6 +1,21 @@
 @startuml
 
 package "common" {
+
+    class BusinessPosition {
+        BusinessSector sector
+	    BusinessUnit unit
+    	BusinessClassification classification
+    }
+
+    class Communication {
+        String jobTitle
+        Language languageCode
+        String email
+        Telephone homePhone
+        String faxNumber
+    }
+
     class PersonName {
         Salutation salutation
         String firstName
@@ -17,8 +32,13 @@ package "common" {
     }
 
     class Telephone {
-        Integer number
-        Integer extension
+        String number
+        String extension
+    }
+
+    class User {
+        String userName
+        List<Role> roles
     }
 }
 

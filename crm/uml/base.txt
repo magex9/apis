@@ -7,19 +7,19 @@ package "system" {
         PENDING
     }
 
-    class Enabled {
+    class Activation {
         Identifer Identifier
         DateTime enabled
         DateTime disabled
     }
 
-    class Role {
+    class String {
         Integer code
-        String name
+        Map<Locale, String> names
     }
 
     class Message {
-        Object base
+        Identifier identifier
         String type
         String path
         String message
@@ -29,17 +29,32 @@ package "system" {
 package "lookup" {
     class Salutation {
         Integer code
-        String name
+        Map<Locale, String> names
     }
 
     class Country {
         String code
-        String name
+        Map<Locale, String> names
     }
 
     class Language {
         String code
-        String name
+        Map<Locale, String> names
+    }
+
+    class BusinessClassification {
+        String code
+        Map<Locale, String> names
+    }
+
+    class BusinessSector {
+        String code
+        Map<Locale, String> names
+    }
+
+    class BusinessUnit {
+        String code
+        Map<Locale, String> names
     }
 }
 

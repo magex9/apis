@@ -1,0 +1,19 @@
+@startuml
+
+package "api" {
+
+    interface Crm extends CrmServices, CrmPolicies, CrmValidation {
+
+    }
+
+    interface CrmServices extends CrmLookupService, CrmOrganizationService, CrmLocationService, CrmPersonService {
+
+    }
+
+    interface CrmPolicies extends CrmOrganizationPolicy, CrmLocationPolicy, CrmPersonPolicy {
+
+    }
+
+}
+
+@enduml

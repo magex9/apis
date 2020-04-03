@@ -14,7 +14,7 @@ servers:
 #          - preview
   - url: https://magex9.github.io/apis/restful/v0
     description: Test server (uses shared data)
-  - url: http://localhost/apis/restful/v0
+  - url: http://localhost:8080/api
     description: Local development (uses test data)
 paths:
   /organizations:

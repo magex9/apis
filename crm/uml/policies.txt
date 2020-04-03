@@ -2,28 +2,36 @@
 
 package "policies" {
 
-    interface OrganizationPolocies {
-        boolean canCreateOrganization(Principal user, Identifier organizationId)
-        boolean canViewOrganization(Principal user, Identifier organizationId)
-        boolean canUpdateOrganization(Principal user, Identifier organizationId)
-        boolean canDisableOrganization(Principal user, Identifier organizationId)
+    interface CrmOrganizationPolicy {
+        boolean canCreateOrganization()
+        boolean canViewOrganization(Identifier organizationId)
+        boolean canUpdateOrganization(Identifier organizationId)
+        boolean canEnableOrganization(Identifier organizationId)
+        boolean canDisableOrganization(Identifier organizationId)
+    }
 
-        boolean canCreateLocation(Principal user, Identifier locationId)
-        boolean canViewLocation(Principal user, Identifier locationId)
-        boolean canUpdateLocation(Principal user, Identifier locationId)
-        boolean canDisableLocation(Principal user, Identifier locationId)
+    interface CrmLocationPolicy {
+        boolean canCreateLocationForOrganization(Identifier organizationId)
+        boolean canViewLocation(Identifier locationId)
+        boolean canUpdateLocation(Identifier locationId)
+        boolean canEnableLocation(Identifier locationId)
+        boolean canDisableLocation(Identifier locationId)
+    }
 
-        boolean canCreatePerson(Principal user, Identifier personId)
-        boolean canViewPerson(Principal user, Identifier personId)
-        boolean canUpdatePerson(Principal user, Identifier personId)
-        boolean canDisablePerson(Principal user, Identifier personId)
+    interface CrmPersonPolicy {
+        boolean canCreatePersonForOrganization(Identifier organizationId)
+        boolean canViewPerson(Identifier personId)
+        boolean canUpdatePerson(Identifier personId)
+        boolean canEnablePerson(Identifier personId)
+        boolean canDisablePerson(Identifier personId)
+        boolean canUpdateUserRole(Identifier personId)
+    }
 
-        boolean canUpdateUserRole(Principal user, String username)
-
-        List<Message> validate(Organization organization)
-        List<Message> validate(Location organization)
-        List<Message> validate(Person organization)
-        List<Message> validate(List<Role> roles)
+    interface CrmValidation {
+        OrganizationDetails validate(OrganizationDetails organization) throws BadRequestException
+        LocationDetails validate(LocationDetails location) throws BadRequestException
+        PersonDetails validate(PersonDetails person) throws BadRequestException
+        List<Role> validate(List<Role> roles, Identifier personId) throws BadRequestException
     }
 
 }
