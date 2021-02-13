@@ -1,0 +1,5 @@
+[
+{ "make": "Toyota", "model": "Celica", "price": 40000},
+{ "make": "Lexus", "model": "RX", "price": 60000 },
+{ "make": "Proche", "model": "Boxter", "price": 80000 }
+]
